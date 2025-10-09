@@ -1,71 +1,64 @@
-# Protocol Name 
+# Protocol Name
 
-Raisebox faucet
-
+RebateFi Hook
 
 ### Prize Pool TO BE FILLED OUT BY CYFRIN
 
-- Total Pool - 
-- H/M -  
-- Low - 
+- Total Pool -
+- H/M -
+- Low -
 
-- Starts: 
-- Ends: 
+- Starts:
+- Ends:
 
-- nSLOC: 
+- nSLOC: ~150
 
 [//]: # (contest-details-open)
 
 ## About the Project
 
-This section should give auditors a feeling for what the protocol does, it's primary functions and the goals it hopes to achieve. Can include links to project websites or docs
+RebateFi Hook is a Uniswap V4 hook implementation that enables asymmetric fee structures for designated ReFi (Rebate Finance) tokens. The protocol applies differential LP fee overrides based on swap direction, creating an innovative economic model that incentivizes token accumulation while managing sell pressure.
 
-```
-About 
+The hook intercepts swap operations and applies custom fee logic - zero(0%) or reduced fees for buying ReFi tokens to encourage accumulation, and standard (0.3%) or premium fees for selling to discourage dumping and generate protocol revenue. This creates a sustainable economic mechanism for regenerative finance projects.
 
-RaiseBox Faucet is a token drip faucet that drips 1000 test tokens to users every 3 days. It also drips 0.005 sepolia eth to first time users.
 
-The faucet tokens will be useful for testing the testnet of a future protocol that would only allow interactions using this tokens.
+[Documentation](https://github.com/fethallaheth/RebateFi/blob/main/README.md)
 
-[Documentation](www.GitHub.com/oxcoda/RaiseboxFaucet_ff/README.md)
-[Website](https://sepolia.etherscan.io/address/0xb0ca2ae586b1ccf5ead5634ac14bdc50bbb5d138#readContract)
-[Twitter](www.twitter.com/0xebby_)
-[GitHub](www.gitHub.com/oxcoda)
+[GitHub](https://github.com/fethallaheth/RebateFi)
 
-```
+[Uniswap V4 Docs](https://docs.uniswap.org/contracts/v4/overview)
 
 ## Actors
 
 ```
 
-There are basically 3 actors in this protocol:
+There are 2 main actors in this protocol:
 
-1. owner: 
+1. owner:
 RESPONSIBILITIES:
 
-- deploys contract, 
-- mint initial supply and any new token in future, 
-- can burn tokens, 
-- can adjust daily claim limit, 
-- can refill sepolia eth balance
-
-LIMITATIONS: 
-
-- cannot claimfaucet tokens
+- deploys hook contract with designated ReFi token address
+- can modify buy and sell fee rates via ChangeFee() function
+- can withdraw accumulated tokens from hook contract to specified addresses
+- has full administrative control over fee configuration
+- monitors protocol revenue and token accumulation
 
 
-2. claimer: 
+2. swapper:
 RESPONSIBILITIES:
 
-- can claim tokens by calling the claimFaucetTokens function of this contract.
+- can execute swaps through Uniswap V4 pools utilizing this hook
+- can buy ReFi tokens with reduced or zero fees (depending on configuration)
+- can sell ReFi tokens subject to configured sell fees
+- must provide sufficient token approvals for swaps
 
-LIMITATIONS: 
+LIMITATIONS:
 
-- Doesn't have any owner defined rights above.
+- cannot bypass hook-enforced fees
+- cannot modify fee structures
+- subject to pool liquidity constraints
+- must use pools that contain the designated ReFi token
 
-3. Donators:
-RESPONSIBILITIES:
-- can donate sepolia eth directly to contract
 
 ```
 
@@ -75,25 +68,9 @@ RESPONSIBILITIES:
 
 ## Scope (contracts)
 
-SCOPE:
 
 ```
-All Contracts in `src` and `tests` are in scope.
-
-```
-src/
-├── RaiseBoxFaucet.sol
-├── RaiseBoxFaucet.t.sol
-├── DeployRaiseBoxFaucet.s.sol
-
-├── interfaces
-│   ├── IERC20.sol
-
-└── utils(Open Zeppelin)
-    ├── Ownable.sol
-    ├── ERC20.sol
-
-
+All contracts in `src` are in scope.
 
 ```
 
@@ -103,12 +80,16 @@ src/
 Compatibilities:
 
   Blockchains:
-      - Ethereum/EVM
+      - Ethereum Mainnet
+      - Arbitrum
+      - Optimism
+      - Base
+      - Polygon
+      - Any EVM-compatible chain with Uniswap V4
   Tokens:
-      - SEP ETH
+      - Standard ERC20 tokens
 ```
 
-[//]: # (scope-close)
 
 
 [//]: # (getting-started-open)
@@ -118,34 +99,30 @@ Compatibilities:
 Build:
 
 ```
-git clone: repo
+git clone https://github.com/fethallaheth/RebateFi.git
+cd RebateFi
 
 forge init
 
-forge install OpenZeppelin/openzeppelin-contracts
+forge install 
 
-forge install forge std
-
-forge build
+forge build --via-ir
 
 ```
 
 Tests:
 
 ```
-Forge test
+forge test --via-ir
 
 ```
 
-[//]: # (getting-started-close)
 
 [//]: # (known-issues-open)
 
 ## Known Issues
 
-`Known Issues:
+Known Issues:
 
-No known issue.
+- Owner has unrestricted access to modify fees and withdraw tokens (consider multi-sig or timelock for production)
 
-`
-[//]: # (known-issues-close)

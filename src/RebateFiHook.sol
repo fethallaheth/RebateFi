@@ -65,8 +65,10 @@ contract ReFiSwapRebateHook is BaseHook, Ownable {
 
 
     function withdrawTokens(address token, address to, uint256 amount) external onlyOwner {
+        // @audit safe transfer not used 
         IERC20(token).transfer(to, amount);
-        emit TokensWithdrawn(token, to, amount);
+        // @audit low to instead of token and verca
+        emit TokensWithdrawn(to, token , amount);
     }
     
     function ChangeFee(
@@ -103,7 +105,8 @@ contract ReFiSwapRebateHook is BaseHook, Ownable {
     }
 
     function _beforeInitialize(address, PoolKey calldata key, uint160) internal view override returns (bytes4) {
-        if (Currency.unwrap(key.currency0) != ReFi && 
+        if (Currency.unwrap(key.currency1) != ReFi && 
+        // @audit currency1 instead of currency0
             Currency.unwrap(key.currency1) != ReFi) {
             revert ReFiNotInPool();
         }
@@ -139,7 +142,8 @@ contract ReFiSwapRebateHook is BaseHook, Ownable {
             
         } else {
             fee = sellFee;
-            uint256 feeAmount = (swapAmount * sellFee) / 1000000;
+            // @audit wrong dominator 1_000_00 instead of 1_000_000 (but only on the event)
+            uint256 feeAmount = (swapAmount * sellFee) / 100000;
             emit ReFiSold(sender, swapAmount, feeAmount);
         }
     
@@ -158,9 +162,10 @@ contract ReFiSwapRebateHook is BaseHook, Ownable {
         bool IsReFiCurrency0 = Currency.unwrap(key.currency0) == ReFi;
         
         if (IsReFiCurrency0) {
-            return !zeroForOne;
-        } else {
+            // @audit swaping zeroforOne mean selling refi to buy token1 
             return zeroForOne;
+        } else {
+            return !zeroForOne;
         }
     }
 
@@ -172,4 +177,7 @@ contract ReFiSwapRebateHook is BaseHook, Ownable {
     function getFeeConfig() external view returns (uint24, uint24) {
         return (buyFee, sellFee);
     }
+    
+    // i can delete this 
+    receive() payable external {}
 }
