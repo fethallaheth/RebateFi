@@ -61,28 +61,10 @@ contract TestReFiSwapRebateHook is Test, Deployers, ERC1155TokenReceiver {
         reFiToken.mint(user1, 1000 ether);
         reFiToken.mint(user2, 1000 ether);
 
-        // Define hook permissions for address mining
-        Hooks.Permissions memory permissions = Hooks.Permissions({
-            beforeInitialize: true,
-            afterInitialize: true,
-            beforeAddLiquidity: false,
-            afterAddLiquidity: false,
-            beforeRemoveLiquidity: false,
-            afterRemoveLiquidity: false,
-            beforeSwap: true,
-            afterSwap: false,
-            beforeDonate: false,
-            afterDonate: false,
-            beforeSwapReturnDelta: false,
-            afterSwapReturnDelta: false,
-            afterAddLiquidityReturnDelta: false,
-            afterRemoveLiquidityReturnDelta: false
-        });
 
         // Get creation code for hook
         bytes memory creationCode = type(ReFiSwapRebateHook).creationCode;
         bytes memory constructorArgs = abi.encode(manager, address(reFiToken));
-        bytes memory bytecode = abi.encodePacked(creationCode, constructorArgs);
 
         // Find a salt that produces a valid hook address
         uint160 flags = uint160(
