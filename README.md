@@ -1,3 +1,13 @@
+## codehawks 
+
+this is a contribution for the codehawks first-flight  :  [RebateFiHook](https://codehawks.cyfrin.io/c/2025-11-rebatefi-hook)
+
+best way to learn from this first flight is
+1. read some blogs uniswap hooks
+2. audit it 
+3. read the report 
+4. revise and learn from what you missed 
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
