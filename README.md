@@ -5,7 +5,7 @@ this is a contribution for the codehawks first-flight  :  [RebateFiHook](https:/
 best way to learn from this first flight is
 1. read some blogs uniswap hooks
 2. audit it 
-3. read the report 
+3. read the [Report](./RebateFi-Hook.md)
 4. revise and learn from what you missed 
 
 ## Foundry

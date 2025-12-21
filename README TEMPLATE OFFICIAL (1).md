@@ -19,7 +19,7 @@ RebateFi Hook
 
 RebateFi Hook is a Uniswap V4 hook implementation that enables asymmetric fee structures for designated ReFi (Rebate Finance) tokens. The protocol applies differential LP fee overrides based on swap direction, creating an innovative economic model that incentivizes token accumulation while managing sell pressure.
 
-The hook intercepts swap operations and applies custom fee logic - zero(0%) or reduced fees for buying ReFi tokens to encourage accumulation, and standard (0.3%) or premium fees for selling to discourage dumping and generate protocol revenue. This creates a sustainable economic mechanism for regenerative finance projects.
+The hook intercepts swap operations and applies custom fee logic - zero(0%) or reduced fees for buying ReFi tokens to encourage accumulation, and standard (0.3%) or premium fees for selling to discourage dumping. This creates a sustainable economic mechanism for regenerative finance projects.
 
 
 [Documentation](https://github.com/fethallaheth/RebateFi/blob/main/README.md)
